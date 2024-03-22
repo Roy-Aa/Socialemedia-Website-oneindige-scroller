@@ -1,11 +1,21 @@
 let pageNumber = 1;
-const perPage = 2; 
+const perPage = 4;
 let loading = false;
 
 async function fetchData(page) {
   const response = await fetch(`../data.json?page=${page}&perPage=${perPage}`);
-  const data = await response.json();
+  let data = await response.json();
+  
+  data = shuffleArray(data);
   return data;
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function renderPosts(posts) {
@@ -28,17 +38,27 @@ function renderPosts(posts) {
   });
 }
 
-window.addEventListener('scroll', async () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loading) {
+const observer = new IntersectionObserver(async (entries) => {
+  if (entries[0].isIntersecting && !loading) {
     loading = true;
     pageNumber++;
     const newData = await fetchData(pageNumber);
-    renderPosts(newData);
+    if (newData.length > 0) {
+      renderPosts(newData);
+    } else {
+      observer.disconnect();
+    }
     loading = false;
   }
+}, {
+  threshold: 0.5
 });
 
-(async () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const initialData = await fetchData(pageNumber);
   renderPosts(initialData);
-})();
+  const lastPost = document.querySelector('.post:last-child');
+  if (lastPost) {
+    observer.observe(lastPost);
+  }
+});

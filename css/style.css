@@ -313,29 +313,36 @@ body{
     margin-bottom: 2rem;
     padding: 1rem;
     border-radius: 1rem;
+    font-family: sans-serif;
   }
 
   .tollie3{
     background: blue;
+    font-family: sans-serif;
   }
 
   .hashtags{
     color: #2d5dc2;
+    font-family: sans-serif;
   }
 
   .div1{
     display: flex;
+    font-family: sans-serif;
   }
 
   .image1{
     height: 10rem;
     margin-bottom: 2rem;
+    font-family: sans-serif;
   }
 
   .div2{
     margin-bottom: 2rem;
+    font-family: sans-serif;
   }
 
   .ph1{
     color: white;
+    font-family: sans-serif;
   }
